@@ -4,11 +4,19 @@ import { addToDb, deleteShoppingCart, getStoredCart } from '../../utilities/fake
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
+/*
+1.count.
+2.perpage(size)
+3.currentPage(page)
+4.pages.(count/size)
 
+*/
 const Shop = () => {
-    const products = useLoaderData();
+    const { products, count } = useLoaderData();
     const [cart, setCart] = useState([]);
-
+    const [size, setSize] = useState(10)
+    const [page, setpage] = useState(0)
+    const pages = Math.ceil(count / size);
     const clearCart = () => {
         setCart([]);
         deleteShoppingCart();
@@ -64,7 +72,19 @@ const Shop = () => {
                     </Link>
                 </Cart>
             </div>
-        </div>
+            <div className="pagination">
+                <p>Current select page:{page}</p>
+                {
+                    [...Array(pages).keys()].map(number => <button
+                        onClick={() => { setpage(number) }}
+                        className={page === number && 'selected'}
+                        key={number} >
+                        {number}
+
+                    </button>)
+                }
+            </div >
+        </div >
     );
 };
 
